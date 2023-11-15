@@ -3,7 +3,6 @@ package me.whiteship.demospringsecurityform.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -28,7 +27,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize  -> {
             authorize
                     // 인증 없이 접근 허용
-                    .requestMatchers("/css/**", "/js/**", "/img/**", "/font/**", "/","/info").permitAll()
+                    .requestMatchers("/","/info", "/account/**").permitAll()
                     // ADMIN 권한이 있어야 허용
                     .requestMatchers("/admin").hasRole("ADMIN")
                     // '인증'만 되면 허용
@@ -43,9 +42,5 @@ public class SecurityConfig {
         return http.build();
     }
 
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("yeji").password("{noop}123").roles("USER").and()
-                .withUser("admin").password("{noop}!@#").roles("ADMIN");
-    }
+
 }
